@@ -9,9 +9,9 @@
 #define MAX_HUNTS 10
 #define MAX_BUFFER 256
 
-pid_t monitor_pid = -1; // PID of the background monitor process
+pid_t monitor_pid = -1;
 
-// Function prototypes
+
 void start_monitor();
 void list_hunts();
 void stop_monitor();
@@ -20,8 +20,8 @@ void cleanup();
 
 int main() {
     char command[MAX_BUFFER];
-    signal(SIGCHLD, signal_handler); // Handle termination of child processes
-    atexit(cleanup); // Ensure cleanup on program exit
+    signal(SIGCHLD, signal_handler);
+    atexit(cleanup);
 
     printf("Welcome to Treasure Hub!\n");
     printf("Commands:\n");
@@ -33,7 +33,7 @@ int main() {
     while (1) {
         printf("> ");
         fgets(command, sizeof(command), stdin);
-        command[strcspn(command, "\n")] = '\0'; // Remove newline
+        command[strcspn(command, "\n")] = '\0';
 
         if (strcmp(command, "start_monitor") == 0) {
             start_monitor();
@@ -55,7 +55,7 @@ int main() {
     return 0;
 }
 
-// Start the monitor process
+
 void start_monitor() {
     if (monitor_pid > 0) {
         printf("Monitor process is already running.\n");
@@ -68,13 +68,25 @@ void start_monitor() {
     }
 
     if (monitor_pid == 0) {
-        // Child process: Simulate hunt monitoring
+
         while (1) {
             printf("Monitor: Monitoring hunts...\n");
-            sleep(3); // Simulate periodic monitoring
+            sleep(3);
         }
-        exit(0); // Child process exits
+        exit(0);
     } else {
         printf("Monitor process started (PID: %d).\n", monitor_pid);
     }
+}
+void list_hunts() {
+    if (monitor_pid <= 0) {
+        printf("Monitor is not running.\n");
+        return;
+    }
+
+    // Simulate listing hunts
+    printf("Monitor: Listing hunts...\n");
+    printf("Hunt 1: game7\n");
+    printf("Hunt 2: game8\n");
+    printf("Hunt 3: game9\n");
 }
